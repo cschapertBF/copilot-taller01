@@ -29,21 +29,31 @@ Las credenciales válidas son:
 ## Uso local con Poetry
 
 1. Instalar Poetry si aún no está disponible.
-2. Instalar dependencias:
+2. Definir las variables de entorno requeridas:
+
+   ```bash
+   export JWT_SECRET_KEY="un-secreto-largo-y-seguro"
+   export JWT_USERNAME="admin"
+   export JWT_PASSWORD="admin123"
+   ```
+
+   > `JWT_USERNAME` y `JWT_PASSWORD` son opcionales; si no se definen, la API usa `admin` y `admin123`.
+
+3. Instalar dependencias:
 
    ```bash
    cd backend
    poetry install
    ```
 
-3. Ejecutar la API:
+4. Ejecutar la API:
 
    ```bash
    cd backend
    poetry run uvicorn app.main:app --reload
    ```
 
-4. Abrir la documentación interactiva:
+5. Abrir la documentación interactiva:
 
    - Swagger UI: `http://localhost:8000/docs`
    - Health check: `http://localhost:8000/health`
@@ -79,10 +89,18 @@ curl -X POST http://localhost:8000/auth/refresh \
 
 ## Uso con Docker
 
-Levantar el servicio:
+1. Crear un archivo `.env` a partir del ejemplo:
 
-```bash
-docker compose up --build
-```
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Ajustar `JWT_SECRET_KEY` en `.env` con un valor seguro.
+
+3. Levantar el servicio:
+
+   ```bash
+   docker compose up --build
+   ```
 
 La API quedará disponible en `http://localhost:8000`.

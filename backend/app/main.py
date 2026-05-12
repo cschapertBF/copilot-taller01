@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from hmac import compare_digest
 import os
 from uuid import uuid4
 
@@ -12,9 +13,18 @@ app = FastAPI(title="JWT Demo API", version="1.0.0")
 ACCESS_TOKEN_EXPIRE_SECONDS = 300
 REFRESH_TOKEN_EXPIRE_SECONDS = 3600
 ALGORITHM = "HS256"
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "change-this-secret-in-production")
-VALID_USERNAME = "admin"
-VALID_PASSWORD = "admin123"
+
+
+def get_required_env(name: str) -> str:
+    value = os.getenv(name)
+    if not value:
+        raise RuntimeError(f"The {name} environment variable must be set.")
+    return value
+
+
+SECRET_KEY = get_required_env("JWT_SECRET_KEY")
+VALID_USERNAME = os.getenv("JWT_USERNAME", "admin")
+VALID_PASSWORD = os.getenv("JWT_PASSWORD", "admin123")
 
 
 class LoginRequest(BaseModel):
@@ -65,7 +75,9 @@ def healthcheck() -> dict[str, str]:
 
 @app.post("/auth/token")
 def login(payload: LoginRequest) -> dict[str, str | int]:
-    if payload.username != VALID_USERNAME or payload.password != VALID_PASSWORD:
+    if not compare_digest(payload.username, VALID_USERNAME) or not compare_digest(
+        payload.password, VALID_PASSWORD
+    ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",
