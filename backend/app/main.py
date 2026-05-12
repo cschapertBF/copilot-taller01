@@ -5,6 +5,7 @@ from uuid import uuid4
 
 import jwt
 from fastapi import FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from jwt import ExpiredSignatureError, InvalidTokenError
 from pydantic import BaseModel
 
@@ -25,6 +26,20 @@ def get_required_env(name: str) -> str:
 SECRET_KEY = get_required_env("JWT_SECRET_KEY")
 VALID_USERNAME = os.getenv("JWT_USERNAME", "admin")
 VALID_PASSWORD = os.getenv("JWT_PASSWORD", "admin123")
+ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:4173",
+    "http://127.0.0.1:4173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+)
 
 
 class LoginRequest(BaseModel):

@@ -1,11 +1,18 @@
 # copilot-taller01
 
-Este repositorio incluye una API Web construida con **FastAPI** y gestionada con **Poetry** para demostrar un flujo básico de autenticación con **JWT**.
+Este repositorio incluye una API Web construida con **FastAPI** y una aplicación **React** para demostrar un flujo básico de autenticación con **JWT**.
 
 ## Estructura
 
 ```text
 .
+├── frontend
+│   ├── src
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   └── main.jsx
+│   ├── package.json
+│   └── vite.config.js
 ├── backend
 │   ├── app
 │   │   └── main.py
@@ -20,13 +27,31 @@ Este repositorio incluye una API Web construida con **FastAPI** y gestionada con
 - `POST /auth/refresh`: recibe `refresh_token`
 - Token de acceso con expiración de **300 segundos**
 - Token de refresco para solicitar un nuevo token de acceso
+- Frontend React con pantalla de login y pantalla de bienvenida
+- Sesión almacenada en `sessionStorage`
+- Protección de la pantalla de bienvenida cuando no existe sesión activa
 
 Las credenciales válidas son:
 
 - Usuario: `admin`
 - Password: `admin123`
 
-## Uso local con Poetry
+## Frontend
+
+La aplicación web está pensada para ejecutarse junto con el backend y ofrece:
+
+- Página de login en `/#/login`
+- Página de bienvenida en `/#/welcome`
+- Redirección automática al login cuando no hay sesión iniciada
+- Cierre de sesión para limpiar la sesión almacenada
+
+Por defecto, el frontend consume el backend en `http://localhost:8000`. Si necesitas otra URL, puedes definir:
+
+```bash
+VITE_API_URL=http://localhost:8000
+```
+
+## Uso local
 
 1. Instalar Poetry si aún no está disponible.
 2. Definir las variables de entorno requeridas:
@@ -39,7 +64,7 @@ Las credenciales válidas son:
 
    > `JWT_USERNAME` y `JWT_PASSWORD` son opcionales; si no se definen, la API usa `admin` y `admin123`.
 
-3. Instalar dependencias:
+3. Instalar dependencias del backend:
 
    ```bash
    cd backend
@@ -53,12 +78,38 @@ Las credenciales válidas son:
    poetry run uvicorn app.main:app --reload
    ```
 
-5. Abrir la documentación interactiva:
+5. En otra terminal, instalar dependencias del frontend:
 
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+6. Ejecutar el frontend:
+
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+
+7. Abrir la aplicación:
+
+   - Frontend: `http://localhost:5173/#/login`
    - Swagger UI: `http://localhost:8000/docs`
    - Health check: `http://localhost:8000/health`
 
-## Ejemplos de uso
+## Uso del login
+
+1. Abrir `http://localhost:5173/#/login`
+2. Ingresar las credenciales:
+
+   - Usuario: `admin`
+   - Password: `admin123`
+
+3. Al iniciar sesión correctamente se guarda la sesión en el navegador y se redirige a `/#/welcome`
+4. Si intentas abrir `/#/welcome` sin sesión, el frontend vuelve automáticamente al login
+
+## Ejemplos de uso del backend
 
 ### Obtener tokens
 
