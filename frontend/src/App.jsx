@@ -5,6 +5,40 @@ const SESSION_STORAGE_KEY = 'auth-session'
 const LOGIN_HASH = '#/login'
 const WELCOME_HASH = '#/welcome'
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+const MICROSOFT_CERTIFICATIONS_2026 = [
+  {
+    title: 'Microsoft Certified: Azure AI Fundamentals',
+    level: 'Fundamentals',
+    update: 'Actualizada en abril de 2026',
+    description:
+      'Puerta de entrada a IA en Azure. Microsoft indica que AI-900 se retira el 30 de junio de 2026 y será reemplazado por AI-901.',
+    url: 'https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/',
+  },
+  {
+    title: 'Microsoft Certified: Azure Administrator Associate',
+    level: 'Associate',
+    update: 'Última actualización: 17/04/2026',
+    description:
+      'Valida habilidades para configurar, administrar, proteger y operar entornos de Microsoft Azure en escenarios reales de nube.',
+    url: 'https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/',
+  },
+  {
+    title: 'Microsoft Certified: Azure AI Engineer Associate',
+    level: 'Associate',
+    update: 'Última actualización: 23/12/2025',
+    description:
+      'Enfocada en diseñar e implementar soluciones con Azure AI, Azure AI Search y Azure OpenAI para proyectos modernos de IA.',
+    url: 'https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-engineer/',
+  },
+  {
+    title: 'Microsoft Certified: Cybersecurity Architect Expert',
+    level: 'Expert',
+    update: 'Actualizada en abril de 2026',
+    description:
+      'Dirigida a arquitectos de seguridad que traducen estrategias Zero Trust en soluciones para identidad, datos, IA, red e infraestructura.',
+    url: 'https://learn.microsoft.com/en-us/credentials/certifications/cybersecurity-architect-expert/',
+  },
+]
 
 function getRouteFromHash(hash = window.location.hash) {
   return hash === WELCOME_HASH ? 'welcome' : 'login'
@@ -147,6 +181,32 @@ function App() {
               <span>Access token</span>
               <code>{session.accessToken}</code>
             </div>
+
+            <section className="certifications-section" aria-labelledby="microsoft-certifications-2026">
+              <div className="section-heading">
+                <h2 id="microsoft-certifications-2026">Certificaciones Microsoft 2026</h2>
+                <p>
+                  Información resumida desde Microsoft Learn sobre credenciales activas en IA,
+                  nube y seguridad para 2026.
+                </p>
+              </div>
+
+              <div className="certification-grid">
+                {MICROSOFT_CERTIFICATIONS_2026.map((certification) => (
+                  <article key={certification.title} className="certification-card">
+                    <span className="certification-level">{certification.level}</span>
+                    <h3>{certification.title}</h3>
+                    <p>{certification.description}</p>
+                    <div className="certification-meta">
+                      <span>{certification.update}</span>
+                      <a href={certification.url} target="_blank" rel="noreferrer">
+                        Ver en Microsoft Learn
+                      </a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
 
             <button type="button" className="primary-button" onClick={handleLogout}>
               Cerrar sesión
