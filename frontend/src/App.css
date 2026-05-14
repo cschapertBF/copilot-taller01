@@ -7,7 +7,7 @@
 }
 
 .card {
-  width: min(440px, 100%);
+  width: min(960px, 100%);
   padding: 32px;
   border: 1px solid var(--border);
   border-radius: 24px;
@@ -97,6 +97,71 @@
   margin: 24px 0;
 }
 
+.certifications-section {
+  margin: 24px 0;
+}
+
+.section-heading {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.section-heading h2,
+.certification-card h3 {
+  margin: 0;
+}
+
+.section-heading p,
+.certification-card p {
+  margin: 0;
+}
+
+.certification-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.certification-card {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.certification-level {
+  justify-self: start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.certification-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.certification-meta a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.certification-meta a:hover {
+  text-decoration: underline;
+}
+
 .token-box span {
   font-size: 14px;
 }
@@ -105,4 +170,10 @@
   display: block;
   padding: 12px;
   overflow-wrap: anywhere;
+}
+
+@media (min-width: 720px) {
+  .certification-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
